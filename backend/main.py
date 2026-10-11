@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import os
 import sqlite3
 
 app = FastAPI()
@@ -13,7 +14,10 @@ app.add_middleware(
     max_age=0,
 )
 
-db = sqlite3.connect("ngayhoi.db", check_same_thread=False)
+db = sqlite3.connect(
+    os.getenv("DB_PATH", "ngayhoi.db"),
+    check_same_thread=False
+)
 db.execute("""CREATE TABLE IF NOT EXISTS dang_ky(
   ma_sv TEXT, ma_phien TEXT, UNIQUE(ma_sv, ma_phien))""")
 
