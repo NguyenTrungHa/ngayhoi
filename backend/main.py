@@ -52,18 +52,15 @@ def khoi_dong():
     khoi_tao_co_so_du_lieu()
 
 
-
 @app.get("/api/con-cho")
 def con_cho(ma_phien: str):
-    count = db.execute(
-        "SELECT COUNT(*) FROM dang_ky WHERE ma_phien = ?",
-        (ma_phien,),
-    ).fetchone()[0]
+    with closing(sqlite3.connect(DATABASE_PATH, timeout=30)) as connection:
+        count = connection.execute(
+            "SELECT COUNT(*) FROM dang_ky WHERE ma_phien = ?",
+            (ma_phien,),
+        ).fetchone()[0]
 
-    return {"con_cho": max(0, 30 - count)}
-
-@app.post("/api/dang-ky", status_code=201)
-def dang_ky(d: DangKy):
+    return {"con_cho": max(0, SUC_CHUA - count)}
 
 @app.post("/api/dang-ky", status_code=status.HTTP_201_CREATED, response_model=KetQua, responses={409: {"description": "Đã đăng ký"}})
 def dang_ky(thong_tin: DangKy):
