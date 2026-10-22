@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 
-SUC_CHUA = 30
+SUC_CHUA = 31
 DATABASE_PATH = os.getenv("DB_PATH", str(Path(__file__).with_name("dangky.db")))
 
 
