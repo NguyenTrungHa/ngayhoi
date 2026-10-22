@@ -21,6 +21,15 @@ class DangKy(BaseModel):
     ma_sv: str
     ma_phien: str
 
+@app.get("/api/con-cho")
+def con_cho(ma_phien: str):
+    count = db.execute(
+        "SELECT COUNT(*) FROM dang_ky WHERE ma_phien = ?",
+        (ma_phien,),
+    ).fetchone()[0]
+
+    return {"con_cho": max(0, 30 - count)}
+
 @app.post("/api/dang-ky", status_code=201)
 def dang_ky(d: DangKy):
     try:
